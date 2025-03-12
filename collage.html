@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Harry Styles Collage Maker</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="js/collage.js" defer></script>
+    <style>
+        body {
+            font-family: 'Dancing Script', cursive;
+            background-color: #FFF7E4;
+            color: #4A4A4A;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #FFDAB9;
+            padding: 20px;
+        }
+        nav ul {
+            list-style: none;
+            padding: 0;
+        }
+        nav ul li {
+            display: inline;
+            margin: 0 15px;
+        }
+        nav ul li a {
+            text-decoration: none;
+            color: #4A4A4A;
+            font-weight: bold;
+        }
+        .collage-container {
+            padding: 20px;
+        }
+        .collage-area {
+            width: 90%;
+            height: 600px;
+            background: url('https://cdn.pixabay.com/photo/2015/11/16/16/28/paper-1044064_960_720.jpg') center/cover no-repeat;
+            border: 2px dashed #FFDAB9;
+            margin: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .draggable {
+            width: 150px;
+            cursor: grab;
+            position: absolute;
+        }
+        .sticker {
+            width: 100px;
+        }
+        .quote {
+            font-size: 18px;
+            font-style: italic;
+            color: #555;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 10px;
+            border-radius: 8px;
+            cursor: grab;
+        }
+        #downloadCollage {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #FFDAB9;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Harry Styles Collage Maker</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="collage.html">Collage Maker</a></li>
+                <li><a href="about.html">About</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="collage-container">
+        <h2>Drag and Arrange the Images</h2>
+
+        <!-- Collage Area -->
+        <div class="collage-area" id="collageArea">
+            <!-- Harry Styles Images from Gallery -->
+            <img src="hs1.jpg" class="draggable" >
+            <img src="hs2.jpg" class="draggable" >
+            <img src="hs3.jpg" class="draggable" >
+            <img src="hs4.jpg" class="draggable" >
+            <img src="hs5.jpg" class="draggable" >
+            <img src="hs6.jpg" class="draggable" >
+            <img src="hs7.jpg" class="draggable" >
+            <img src="hs8.jpg" class="draggable" >
+            <img src="hs9.jpg" class="draggable" >
+            <img src="hs10.jpg" class="draggable" >
+            <img src="hs11.jpg" class="draggable" >
+
+            <!-- Harry Styles Quotes -->
+            <div class="draggable quote">"Treat people with kindness." – Harry Styles</div>
+            <div class="draggable quote">"Be a lover. Give love. Choose love." – Harry Styles</div>
+            <div class="draggable quote">"Golden, like the sun!" – Harry Styles</div>
+        </div>
+
+        <!-- Download Button -->
+        <button id="downloadCollage">Download Collage</button>
+    </main>
+
+    <footer>
+        <p>Made with ❤️ for Harry Styles fans</p>
+    </footer>
+
+    <script>
+        // Dragging functionality
+        document.querySelectorAll('.draggable').forEach(item => {
+            item.onmousedown = function(event) {
+                let shiftX = event.clientX - item.getBoundingClientRect().left;
+                let shiftY = event.clientY - item.getBoundingClientRect().top;
+
+                item.style.position = 'absolute';
+                item.style.zIndex = 1000;
+                document.body.append(item);
+
+                moveAt(event.pageX, event.pageY);
+
+                function moveAt(pageX, pageY) {
+                    item.style.left = pageX - shiftX + 'px';
+                    item.style.top = pageY - shiftY + 'px';
+                }
+
+                function onMouseMove(event) {
+                    moveAt(event.pageX, event.pageY);
+                }
+
+                document.addEventListener('mousemove', onMouseMove);
+
+                item.onmouseup = function() {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    item.onmouseup = null;
+                };
+            };
+
+            item.ondragstart = function() {
+                return false;
+            };
+        });
+
+        // Download Collage
+        document.getElementById('downloadCollage').addEventListener('click', () => {
+            html2canvas(document.getElementById('collageArea')).then(canvas => {
+                let link = document.createElement('a');
+                link.download = 'harry_styles_collage.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        });
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+</body>
+</html>
